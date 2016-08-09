@@ -47,6 +47,7 @@ namespace PlariumEx
             XRow["Parametr1"] = PrX1TextBox.Text;
             XRow["Parametr2"] = PrX2TextBox.Text;
             XRow["TimeChange"] = DateTime.Now;
+            myDB.TableX.Rows.Add(XRow);
             XTable.InsertX(XRow);
         }
 
@@ -56,6 +57,8 @@ namespace PlariumEx
             XRow["Id"] = (int)TableX.SelectedDataKey.Values["Id"];
             XRow["Parametr1"] = PrX1TextBox.Text;
             XRow["Parametr2"] = PrX2TextBox.Text;
+            XRow["TimeChange"] = DateTime.Now;
+            myDB.TableX.Rows.Add(XRow);
             XTable.ChangeX(XRow);
         }
 
@@ -65,7 +68,14 @@ namespace PlariumEx
             XRow["Id"] = (int)TableX.SelectedDataKey.Values["Id"];
             XRow["Parametr1"] = PrX1TextBox.Text;
             XRow["Parametr2"] = PrX2TextBox.Text;
+            myDB.TableX.Rows.Add(XRow);
             XTable.DeleteX(XRow);
+        }
+
+        protected void SaveChengesXButton_Click(object sender, EventArgs e)
+        {
+            XTable.Save();
+            TableX.DataSourceID = TableX.DataSourceID;
         }
     }
 }

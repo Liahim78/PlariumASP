@@ -19,10 +19,10 @@ namespace PlariumEx
         }
 
         static MyDB myDB = new MyDB();
-        static DataTable myTable;
+        static List<DataRow> listDataRow;
         static XTable()
         {
-            myTable = myDB.TableX;
+            listDataRow = new List<DataRow>();
         }
 
         static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\MyDB.mdf;Integrated Security=True";
@@ -62,7 +62,7 @@ namespace PlariumEx
         }
         public static void InsertX(DataRow XRow)
         {
-            myTable.Rows.Add(XRow);
+            listDataRow.Add(XRow);
             string commandString = "INSERT TableX " +
                                    "VALUES (@Parametr1, @Parametr2, @TimeChange) SELECT Id FROM TableX WHERE Id = @@IDENTITY";
 
@@ -91,10 +91,11 @@ namespace PlariumEx
         }
         public static void ChangeX(DataRow XRow)
         {
-            myTable.Rows.Add(XRow);
+            listDataRow.Add(XRow);
             string commandString = "UPDATE TableX " +
                                    "SET Parametr1 = @Parametr1," +
-                                   "Parametr2 = @Parametr2 WHERE Id = @Id";
+                                   "Parametr2 = @Parametr2," +
+                                   "TimeChange = @TimeChange WHERE Id = @Id";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -103,12 +104,13 @@ namespace PlariumEx
                 cmd.Parameters.AddWithValue("Id", XRow[0]);
                 cmd.Parameters.AddWithValue("Parametr1", XRow[1]);
                 cmd.Parameters.AddWithValue("Parametr2", XRow[2]);
+                cmd.Parameters.AddWithValue("TimeChange", XRow[3]);
                 cmd.ExecuteNonQuery();
             }
         }
         public static void DeleteX(DataRow XRow)
         {
-            myTable.Rows.Add(XRow);
+            listDataRow.Add(XRow);
             string commandString = "DELETE TableX " +
                                    "WHERE Id = @Id";
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -117,6 +119,13 @@ namespace PlariumEx
                 SqlCommand cmd = new SqlCommand(commandString, connection);
                 cmd.Parameters.AddWithValue("Id", XRow[0]);
                 cmd.ExecuteNonQuery();
+            }
+        }
+        public static void Save()
+        {
+            foreach (var item in listDataRow)
+            {
+                item.AcceptChanges();  
             }
         }
     }
