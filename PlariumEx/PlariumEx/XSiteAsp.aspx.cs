@@ -51,7 +51,6 @@ namespace PlariumEx
         }
 
         protected void UpdateXButton_Click(object sender, EventArgs e)
-
         {
             DataRow XRow = myDB.TableX.NewRow();
             XRow["Id"] = (int)TableX.SelectedDataKey.Values["Id"];
