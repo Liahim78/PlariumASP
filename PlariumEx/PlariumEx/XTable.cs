@@ -10,9 +10,9 @@ namespace PlariumEx
 {
     class XTable
     {
-        private static DateTime? [] timeReadingRows;
-
-        public static DateTime? [] TimeReadingRows
+        private static Dictionary<int, DateTime?> timeReadingRows;
+        
+        public static Dictionary<int, DateTime?> TimeReadingRows
         {   
             get { return timeReadingRows; }
             set { timeReadingRows = value; }
@@ -23,41 +23,52 @@ namespace PlariumEx
         static XTable()
         {
             listDataRow = new List<DataRow>();
+            timeReadingRows = new Dictionary<int, DateTime?>();
         }
 
         static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\MyDB.mdf;Integrated Security=True";
         public static void SelectAll()
         {
-            string commandString = "SELECT TimeChange FROM TableX";
+            string commandString = "SELECT Id, TimeChange FROM TableX";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
                 SqlCommand cmd = new SqlCommand(commandString, connection);
-                var s = cmd.ExecuteReader();
-                int length = 0;
-                foreach (var item in s)
-                    length++;
-                TimeReadingRows = new DateTime?[length];
-                int i = 0;
-                foreach (var item in s)
+                var reader = cmd.ExecuteReader();
+                while (reader.Read())
                 {
-                    TimeReadingRows[i++] = item as DateTime?;
+                    try
+                    {
+                        timeReadingRows.Add(reader.GetInt32(0), reader.GetDateTime(1));
+                    }
+                    catch (ArgumentException)
+                    {
+                        timeReadingRows[reader.GetInt32(0)] = reader.GetDateTime(1);
+                    }
                 }
             }
+            
         }
         public static void SelectId(int id)
         {
-            string commandString = "SELECT TimeChange FROM TableX";
+            string commandString = "SELECT TimeChange FROM TableX WHERE Id=@Id";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
                 SqlCommand cmd = new SqlCommand(commandString, connection);
-                var s = cmd.ExecuteReader();
-                int length = 0;
-                foreach (var item in s)
-                    length++;
-                TimeReadingRows = new DateTime?[length];
-                TimeReadingRows[id] = s[id] as DateTime?;
+                cmd.Parameters.AddWithValue("Id", id);
+                var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    try
+                    {
+                        timeReadingRows.Add(id, reader.GetDateTime(0));
+                    }
+                    catch(ArgumentException)
+                    {
+                        timeReadingRows[id] = reader.GetDateTime(0);
+                    }
+                }
             }
         }
         public static void InsertX(DataRow XRow)
@@ -92,6 +103,7 @@ namespace PlariumEx
         public static void ChangeX(DataRow XRow)
         {
             listDataRow.Add(XRow);
+            
             string commandString = "UPDATE TableX " +
                                    "SET Parametr1 = @Parametr1," +
                                    "Parametr2 = @Parametr2," +

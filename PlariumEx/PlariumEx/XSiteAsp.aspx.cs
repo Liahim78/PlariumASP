@@ -31,6 +31,7 @@ namespace PlariumEx
             TableX.DataSourceID = "XIdSqlDataSource";
             TableX.Visible = true;
             IdXTextBox.Text = IdXTextBox.Text == "" ? 1.ToString() : IdXTextBox.Text ;
+            XTable.SelectId(Convert.ToInt32(IdXTextBox.Text));
         }
 
         protected void TableX_SelectedIndexChanged(object sender, EventArgs e)
@@ -53,6 +54,24 @@ namespace PlariumEx
 
         protected void UpdateXButton_Click(object sender, EventArgs e)
         {
+            string commandString = "SELECT TimeChange FROM TableX WHERE Id = @Id";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand(commandString, connection);
+                int index = (int)TableX.SelectedDataKey.Values["Id"];
+                cmd.Parameters.AddWithValue("Id", index);
+                var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    DateTime? myDateTime = reader.GetDateTime(0);
+                    if (myDateTime != XTable.TimeReadingRows[index])
+                    {
+                        Response.Write("<script> alert(\"Данные были изменены обновите данные\"); </script>");
+                        return;
+                    }
+                }
+            }
             DataRow XRow = myDB.TableX.NewRow();
             XRow["Id"] = (int)TableX.SelectedDataKey.Values["Id"];
             XRow["Parametr1"] = PrX1TextBox.Text;
@@ -75,7 +94,7 @@ namespace PlariumEx
         protected void SaveChengesXButton_Click(object sender, EventArgs e)
         {
             XTable.Save();
-            TableX.DataSourceID = TableX.DataSourceID;
+            TableX.Visible = false;
         }
     }
 }
