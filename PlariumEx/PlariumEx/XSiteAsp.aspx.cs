@@ -1,31 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace PlariumEx
 {
     public partial class SiteAsp : System.Web.UI.Page
     {
         static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\MyDB.mdf;Integrated Security=True";
-        int indexX;
+        
         MyDB myDB = new MyDB();
         protected void Page_Load(object sender, EventArgs e)
         {
 
         }
-
+        // Select all rows from TableX
         protected void SelectAllXButton_Click(object sender, EventArgs e)
         {
             TableX.DataSourceID = "XSqlDataSource";
             XTable.SelectAll();
             TableX.Visible = true;
         }
-
+        // Select row from TableX Where id=Id in textBox
         protected void SelectByIdXButton_Click(object sender, EventArgs e)
         {
             TableX.DataSourceID = "XIdSqlDataSource";
@@ -33,15 +28,14 @@ namespace PlariumEx
             IdXTextBox.Text = IdXTextBox.Text == "" ? 1.ToString() : IdXTextBox.Text ;
             XTable.SelectId(Convert.ToInt32(IdXTextBox.Text));
         }
-
+        // Method writes values from selectRow to TextBoxes
         protected void TableX_SelectedIndexChanged(object sender, EventArgs e)
         {
-            indexX = (int)TableX.SelectedDataKey.Values["Id"];
-            SelectIdLabel.Text = string.Format("Select Id = {0}", indexX);
+            SelectIdLabel.Text = string.Format("Select Id = {0}", (int)TableX.SelectedDataKey.Values["Id"]);
             PrX1TextBox.Text = TableX.SelectedRow.Cells[2].Text;
             PrX2TextBox.Text = TableX.SelectedRow.Cells[3].Text;
         }
-
+        // Method add new row in TableX from TextBoxes
         protected void AddXButton_Click(object sender, EventArgs e)
         {
             DataRow XRow = myDB.TableX.NewRow();
@@ -52,7 +46,7 @@ namespace PlariumEx
             XTable.InsertX(XRow);
             TableX.DataSourceID = TableX.DataSourceID;
         }
-
+        // Method update selected row and check TimeChange.
         protected void UpdateXButton_Click(object sender, EventArgs e)
         {
             if (!CheckTimeChange())
@@ -66,7 +60,7 @@ namespace PlariumEx
             XTable.ChangeX(XRow);
             TableX.DataSourceID = TableX.DataSourceID;
         }
-
+        // method check TimeChenge. If other user chenge selected row then return true, else false
         private bool CheckTimeChange()
         {
             string commandString = "SELECT TimeChange FROM TableX WHERE Id = @Id";
@@ -90,7 +84,7 @@ namespace PlariumEx
             }
             return true;
         }
-
+        //method Delete selected row
         protected void DeleteXButton_Click(object sender, EventArgs e)
         {
             if (!CheckTimeChange())

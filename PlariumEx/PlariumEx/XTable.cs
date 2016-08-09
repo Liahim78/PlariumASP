@@ -24,6 +24,7 @@ namespace PlariumEx
         }
 
         static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\MyDB.mdf;Integrated Security=True";
+        //write in timeReadingRow TimeChange from TableX
         public static void SelectAll()
         {
             string commandString = "SELECT Id, TimeChange FROM TableX";
@@ -34,7 +35,7 @@ namespace PlariumEx
                 var reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    try
+                    try // if there isn't timeReadingRow with key=reader.GetInt32(0)
                     {
                         timeReadingRows.Add(reader.GetInt32(0), reader.GetDateTime(1));
                     }
@@ -46,6 +47,7 @@ namespace PlariumEx
             }
             
         }
+        //write TimeChange from TableX where id = SelectedId in timeReadingRow
         public static void SelectId(int id)
         {
             string commandString = "SELECT TimeChange FROM TableX WHERE Id=@Id";
@@ -57,7 +59,7 @@ namespace PlariumEx
                 var reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    try
+                    try// if there isn't timeReadingRow with key=id
                     {
                         timeReadingRows.Add(id, reader.GetDateTime(0));
                     }
@@ -68,6 +70,7 @@ namespace PlariumEx
                 }
             }
         }
+        //insert XRow in TableX
         public static void InsertX(DataRow XRow)
         {
             string commandString = "INSERT TableX " +
@@ -97,6 +100,7 @@ namespace PlariumEx
                 XRow.AcceptChanges();
             }
         }
+        //Change XRow in TableX
         public static void ChangeX(DataRow XRow)
         {
             
@@ -118,6 +122,7 @@ namespace PlariumEx
             }
             XRow.AcceptChanges();
         }
+        //Delete Xrow in TableX
         public static void DeleteX(DataRow XRow)
         {
             string commandString = "DELETE TableX " +
