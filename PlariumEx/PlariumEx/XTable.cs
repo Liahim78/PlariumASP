@@ -17,12 +17,9 @@ namespace PlariumEx
             get { return timeReadingRows; }
             set { timeReadingRows = value; }
         }
-
-        static MyDB myDB = new MyDB();
-        static List<DataRow> listDataRow;
+        
         static XTable()
         {
-            listDataRow = new List<DataRow>();
             timeReadingRows = new Dictionary<int, DateTime?>();
         }
 
@@ -73,7 +70,6 @@ namespace PlariumEx
         }
         public static void InsertX(DataRow XRow)
         {
-            listDataRow.Add(XRow);
             string commandString = "INSERT TableX " +
                                    "VALUES (@Parametr1, @Parametr2, @TimeChange) SELECT Id FROM TableX WHERE Id = @@IDENTITY";
 
@@ -98,11 +94,11 @@ namespace PlariumEx
                 {
                     XRow.Table.Columns[0].ReadOnly = true;
                 }
+                XRow.AcceptChanges();
             }
         }
         public static void ChangeX(DataRow XRow)
         {
-            listDataRow.Add(XRow);
             
             string commandString = "UPDATE TableX " +
                                    "SET Parametr1 = @Parametr1," +
@@ -118,11 +114,12 @@ namespace PlariumEx
                 cmd.Parameters.AddWithValue("Parametr2", XRow[2]);
                 cmd.Parameters.AddWithValue("TimeChange", XRow[3]);
                 cmd.ExecuteNonQuery();
+                SelectId((int)XRow[0]);
             }
+            XRow.AcceptChanges();
         }
         public static void DeleteX(DataRow XRow)
         {
-            listDataRow.Add(XRow);
             string commandString = "DELETE TableX " +
                                    "WHERE Id = @Id";
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -132,13 +129,8 @@ namespace PlariumEx
                 cmd.Parameters.AddWithValue("Id", XRow[0]);
                 cmd.ExecuteNonQuery();
             }
+            XRow.AcceptChanges();
         }
-        public static void Save()
-        {
-            foreach (var item in listDataRow)
-            {
-                item.AcceptChanges();  
-            }
-        }
+        
     }
 }

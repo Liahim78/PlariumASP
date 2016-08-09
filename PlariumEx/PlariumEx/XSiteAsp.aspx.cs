@@ -50,9 +50,24 @@ namespace PlariumEx
             XRow["TimeChange"] = DateTime.Now;
             myDB.TableX.Rows.Add(XRow);
             XTable.InsertX(XRow);
+            TableX.DataSourceID = TableX.DataSourceID;
         }
 
         protected void UpdateXButton_Click(object sender, EventArgs e)
+        {
+            if (!CheckTimeChange())
+                return;
+            DataRow XRow = myDB.TableX.NewRow();
+            XRow["Id"] = (int)TableX.SelectedDataKey.Values["Id"];
+            XRow["Parametr1"] = PrX1TextBox.Text;
+            XRow["Parametr2"] = PrX2TextBox.Text;
+            XRow["TimeChange"] = DateTime.Now;
+            myDB.TableX.Rows.Add(XRow);
+            XTable.ChangeX(XRow);
+            TableX.DataSourceID = TableX.DataSourceID;
+        }
+
+        private bool CheckTimeChange()
         {
             string commandString = "SELECT TimeChange FROM TableX WHERE Id = @Id";
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -65,36 +80,28 @@ namespace PlariumEx
                 while (reader.Read())
                 {
                     DateTime? myDateTime = reader.GetDateTime(0);
-                    if (myDateTime != XTable.TimeReadingRows[index])
+                    DateTime? tableDate = XTable.TimeReadingRows[index];
+                    if (myDateTime != tableDate)
                     {
                         Response.Write("<script> alert(\"Данные были изменены обновите данные\"); </script>");
-                        return;
+                        return false;
                     }
                 }
             }
-            DataRow XRow = myDB.TableX.NewRow();
-            XRow["Id"] = (int)TableX.SelectedDataKey.Values["Id"];
-            XRow["Parametr1"] = PrX1TextBox.Text;
-            XRow["Parametr2"] = PrX2TextBox.Text;
-            XRow["TimeChange"] = DateTime.Now;
-            myDB.TableX.Rows.Add(XRow);
-            XTable.ChangeX(XRow);
+            return true;
         }
 
         protected void DeleteXButton_Click(object sender, EventArgs e)
         {
+            if (!CheckTimeChange())
+                return;
             DataRow XRow = myDB.TableX.NewRow();
             XRow["Id"] = (int)TableX.SelectedDataKey.Values["Id"];
             XRow["Parametr1"] = PrX1TextBox.Text;
             XRow["Parametr2"] = PrX2TextBox.Text;
             myDB.TableX.Rows.Add(XRow);
             XTable.DeleteX(XRow);
-        }
-
-        protected void SaveChengesXButton_Click(object sender, EventArgs e)
-        {
-            XTable.Save();
-            TableX.Visible = false;
+            TableX.DataSourceID = TableX.DataSourceID;
         }
     }
 }

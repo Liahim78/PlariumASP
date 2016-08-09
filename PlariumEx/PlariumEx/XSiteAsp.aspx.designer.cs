@@ -58,15 +58,6 @@ namespace PlariumEx {
         protected global::System.Web.UI.WebControls.Button SelectAllXButton;
         
         /// <summary>
-        /// SaveChengesXButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SaveChengesXButton;
-        
-        /// <summary>
         /// SelectByIdXButton control.
         /// </summary>
         /// <remarks>

@@ -40,8 +40,7 @@
        
         <br />
         <asp:Button ID="SelectAllXButton" runat="server" Text="Select all X" OnClick="SelectAllXButton_Click" />
-&nbsp;<asp:Button ID="SaveChengesXButton" runat="server" Text="Save chenges" OnClick="SaveChengesXButton_Click" />
-        <br />
+&nbsp;<br />
         <asp:Button ID="SelectByIdXButton" runat="server" Text="Select by Id" OnClick="SelectByIdXButton_Click" />
 &nbsp;<asp:TextBox ID="IdXTextBox" runat="server"></asp:TextBox>
         <br />
