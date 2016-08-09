@@ -19,12 +19,14 @@ namespace PlariumEx
             TableX.DataSourceID = "XSqlDataSource";
             XTable.SelectAll();
             TableX.Visible = true;
+            IdXTextBox.Visible = LabelPrX1.Visible = LabelPrX2.Visible = PrX1TextBox.Visible = PrX2TextBox.Visible = AddXButton.Visible = UpdateXButton.Visible = DeleteXButton.Visible = true;
         }
         // Select row from TableX Where id=Id in textBox
         protected void SelectByIdXButton_Click(object sender, EventArgs e)
         {
             TableX.DataSourceID = "XIdSqlDataSource";
             TableX.Visible = true;
+            IdXTextBox.Visible = LabelPrX1.Visible = LabelPrX2.Visible = PrX1TextBox.Visible = PrX2TextBox.Visible = AddXButton.Visible = UpdateXButton.Visible = DeleteXButton.Visible = true;
             IdXTextBox.Text = IdXTextBox.Text == "" ? 1.ToString() : IdXTextBox.Text ;
             XTable.SelectId(Convert.ToInt32(IdXTextBox.Text));
         }
@@ -91,8 +93,6 @@ namespace PlariumEx
                 return;
             DataRow XRow = myDB.TableX.NewRow();
             XRow["Id"] = (int)TableX.SelectedDataKey.Values["Id"];
-            XRow["Parametr1"] = PrX1TextBox.Text;
-            XRow["Parametr2"] = PrX2TextBox.Text;
             myDB.TableX.Rows.Add(XRow);
             XTable.DeleteX(XRow);
             TableX.DataSourceID = TableX.DataSourceID;

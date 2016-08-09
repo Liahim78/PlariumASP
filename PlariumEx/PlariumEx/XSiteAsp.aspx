@@ -45,17 +45,17 @@
 &nbsp;<asp:TextBox ID="IdXTextBox" runat="server"></asp:TextBox>
         <br />
         <br />
-        <asp:Label ID="SelectIdLabel" runat="server" Text="Select Id = Null"></asp:Label>
+        <asp:Label ID="SelectIdLabel" runat="server" Text="Select Id = Null" Visible="False"></asp:Label>
         <br />
-        <asp:Label ID="LabelPrX1" runat="server" Text="ParametrX1"></asp:Label>
-&nbsp;<asp:TextBox ID="PrX1TextBox" runat="server"></asp:TextBox>
+        <asp:Label ID="LabelPrX1" runat="server" Text="ParametrX1" Visible="False"></asp:Label>
+&nbsp;<asp:TextBox ID="PrX1TextBox" runat="server" Visible="False"></asp:TextBox>
         <br />
-        <asp:Label ID="LabelPrX2" runat="server" Text="ParametrX2"></asp:Label>
-&nbsp;<asp:TextBox ID="PrX2TextBox" runat="server"></asp:TextBox>
+        <asp:Label ID="LabelPrX2" runat="server" Text="ParametrX2" Visible="False"></asp:Label>
+&nbsp;<asp:TextBox ID="PrX2TextBox" runat="server" Visible="False"></asp:TextBox>
         <br />
-        <asp:Button ID="AddXButton" runat="server" Text="Add" OnClick="AddXButton_Click" />
-        &nbsp;<asp:Button ID="UpdateXButton" runat="server" Text="Update" OnClick="UpdateXButton_Click" />
-        &nbsp;<asp:Button ID="DeleteXButton" runat="server" Text="Delete" OnClick="DeleteXButton_Click" />
+        <asp:Button ID="AddXButton" runat="server" Text="Add" OnClick="AddXButton_Click" Visible="False" />
+        &nbsp;<asp:Button ID="UpdateXButton" runat="server" Text="Update" OnClick="UpdateXButton_Click" Visible="False" />
+        &nbsp;<asp:Button ID="DeleteXButton" runat="server" Text="Delete" OnClick="DeleteXButton_Click" Visible="False" />
         
     </div>
     </form>

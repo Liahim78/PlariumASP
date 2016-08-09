@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PlariumEx
 {
@@ -71,7 +68,7 @@ namespace PlariumEx
             }
         }
         //insert XRow in TableX
-        public static void InsertX(DataRow XRow)
+        public static void InsertX(DataRow xRow)
         {
             string commandString = "INSERT TableX " +
                                    "VALUES (@Parametr1, @Parametr2, @TimeChange) SELECT Id FROM TableX WHERE Id = @@IDENTITY";
@@ -81,13 +78,13 @@ namespace PlariumEx
                 connection.Open();
 
                 SqlCommand cmd = new SqlCommand(commandString, connection);
-                cmd.Parameters.AddWithValue("Parametr1", XRow[1]);
-                cmd.Parameters.AddWithValue("Parametr2", XRow[2]);
-                cmd.Parameters.AddWithValue("TimeChange", XRow[3]);
+                cmd.Parameters.AddWithValue("Parametr1", xRow[1]);
+                cmd.Parameters.AddWithValue("Parametr2", xRow[2]);
+                cmd.Parameters.AddWithValue("TimeChange", xRow[3]);
                 try
                 {
-                    XRow.Table.Columns[0].ReadOnly = false;
-                    XRow.SetField<int>(0, (int)cmd.ExecuteScalar());
+                    xRow.Table.Columns[0].ReadOnly = false;
+                    xRow.SetField<int>(0, (int)cmd.ExecuteScalar());
                 }
                 catch (Exception)
                 {
@@ -95,13 +92,13 @@ namespace PlariumEx
                 }
                 finally
                 {
-                    XRow.Table.Columns[0].ReadOnly = true;
+                    xRow.Table.Columns[0].ReadOnly = true;
                 }
-                XRow.AcceptChanges();
+                xRow.AcceptChanges();
             }
         }
         //Change XRow in TableX
-        public static void ChangeX(DataRow XRow)
+        public static void ChangeX(DataRow xRow)
         {
             
             string commandString = "UPDATE TableX " +
@@ -113,17 +110,17 @@ namespace PlariumEx
                 connection.Open();
 
                 SqlCommand cmd = new SqlCommand(commandString, connection);
-                cmd.Parameters.AddWithValue("Id", XRow[0]);
-                cmd.Parameters.AddWithValue("Parametr1", XRow[1]);
-                cmd.Parameters.AddWithValue("Parametr2", XRow[2]);
-                cmd.Parameters.AddWithValue("TimeChange", XRow[3]);
+                cmd.Parameters.AddWithValue("Id", xRow[0]);
+                cmd.Parameters.AddWithValue("Parametr1", xRow[1]);
+                cmd.Parameters.AddWithValue("Parametr2", xRow[2]);
+                cmd.Parameters.AddWithValue("TimeChange", xRow[3]);
                 cmd.ExecuteNonQuery();
-                SelectId((int)XRow[0]);
+                SelectId((int)xRow[0]);
             }
-            XRow.AcceptChanges();
+            xRow.AcceptChanges();
         }
         //Delete Xrow in TableX
-        public static void DeleteX(DataRow XRow)
+        public static void DeleteX(DataRow xRow)
         {
             string commandString = "DELETE TableX " +
                                    "WHERE Id = @Id";
@@ -131,10 +128,10 @@ namespace PlariumEx
             {
                 connection.Open();
                 SqlCommand cmd = new SqlCommand(commandString, connection);
-                cmd.Parameters.AddWithValue("Id", XRow[0]);
+                cmd.Parameters.AddWithValue("Id", xRow[0]);
                 cmd.ExecuteNonQuery();
             }
-            XRow.AcceptChanges();
+            xRow.AcceptChanges();
         }
         
     }

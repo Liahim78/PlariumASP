@@ -92,6 +92,7 @@
     </Content>
     <Content Include="XSiteAsp.aspx" />
     <Content Include="Web.config" />
+    <Content Include="YSiteAsp.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MyDB.Designer.cs">
@@ -108,6 +109,14 @@
       <DependentUpon>XSiteAsp.aspx</DependentUpon>
     </Compile>
     <Compile Include="XTable.cs" />
+    <Compile Include="YSiteAsp.aspx.cs">
+      <DependentUpon>YSiteAsp.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="YSiteAsp.aspx.designer.cs">
+      <DependentUpon>YSiteAsp.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="YTable.cs" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>
